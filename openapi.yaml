@@ -1,0 +1,111 @@
+swagger: '2.0'
+info:
+  title: Dizi API
+  description: Dizi verileri üzerinde CRUD işlemleri yapılabilen API.
+  version: '1.0'
+basePath: /api
+paths:
+  /diziler:
+    get:
+      summary: Tüm dizileri listele
+      responses:
+        '200':
+          description: Başarılı istek
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Dizi'
+    post:
+      summary: Yeni dizi ekle
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/YeniDizi'
+      responses:
+        '201':
+          description: Yeni dizi başarıyla eklendi
+        '400':
+          description: Eksik bilgi
+  /diziler/{dizi_id}:
+    parameters:
+      - name: dizi_id
+        in: path
+        required: true
+        type: integer
+        format: int64
+        description: Dizi ID'si
+    get:
+      summary: Belirli bir diziye eriş
+      responses:
+        '200':
+          description: Başarılı istek
+          schema:
+            $ref: '#/definitions/Dizi'
+        '404':
+          description: Dizi bulunamadı
+    put:
+      summary: Dizi bilgilerini güncelle
+      parameters:
+        - name: dizi_id
+          in: path
+          required: true
+          type: integer
+          format: int64
+          description: Dizi ID'si
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/GuncellenmisDizi'
+      responses:
+        '200':
+          description: Dizi başarıyla güncellendi
+        '404':
+          description: Dizi bulunamadı
+    delete:
+      summary: Diziyi sil
+      responses:
+        '200':
+          description: Dizi başarıyla silindi
+        '404':
+          description: Dizi bulunamadı
+definitions:
+  Dizi:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      isim:
+        type: string
+      turu:
+        type: string
+      puan:
+        type: number
+        format: float
+  YeniDizi:
+    type: object
+    required:
+      - isim
+      - turu
+      - puan
+    properties:
+      isim:
+        type: string
+      turu:
+        type: string
+      puan:
+        type: number
+        format: float
+  GuncellenmisDizi:
+    type: object
+    properties:
+      isim:
+        type: string
+      turu:
+        type: string
+      puan:
+        type: number
+        format: float
